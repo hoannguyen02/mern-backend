@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const placesRoutes = require('./routes/places-routes');
 const usersRoutes = require('./routes/users-routes');
@@ -24,5 +25,14 @@ app.use((error, req, res, next) => {
   res.status(error.code || 500)
   res.json({message: error.message || 'An unknown error occurred!'});
 });
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useUnifiedTopology', true);
+mongoose.set('useCreateIndex', true);
+mongoose
+.connect('mongodb+srv://hoannguyen:HobvQqDqTYvWjbV1@cluster0-z9xxh.mongodb.net/places?retryWrites=true&w=majority')
+.then(() => {
+  app.listen(5000);
 
-app.listen(5000);
+}).catch((err) => {
+  console.log(err)
+});
